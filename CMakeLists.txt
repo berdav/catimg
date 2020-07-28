@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(catimg)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 if (NOT MAN_OUTPUT_PATH)
   set(MAN_OUTPUT_PATH "share/man/man1")
@@ -43,12 +44,17 @@ add_library(
 install(TARGETS catimg-bin
   RUNTIME DESTINATION bin)
 
+install(TARGETS catimg
+  LIBRARY DESTINATION lib)
+
 # man page
 install(FILES ${PROJECT_SOURCE_DIR}/man/catimg.1
   DESTINATION ${MAN_OUTPUT_PATH})
 
 # libs
 target_link_libraries(catimg-bin m)
+
+set_target_properties(catimg-bin PROPERTIES OUTPUT_NAME catimg)
 
 # tests
 #enable_testing()
