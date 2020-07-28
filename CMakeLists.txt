@@ -23,13 +23,24 @@ set(EXECUTABLE_OUTPUT_PATH bin)
 # find files
 file(GLOB_RECURSE source_files ${SRC}/*)
 
+# Remove catimg file from library
+set(library_files ${source_files})
+list(REMOVE_ITEM library_files ${SRC}/catimg.c)
+
 # catimg executable
 add_executable(
-  catimg
+  catimg-bin
   ${source_files}
   )
 
-install(TARGETS catimg
+# libcatimg
+add_library(
+  catimg
+  SHARED
+  ${library_files}
+  )
+
+install(TARGETS catimg-bin
   RUNTIME DESTINATION bin)
 
 # man page
@@ -37,7 +48,7 @@ install(FILES ${PROJECT_SOURCE_DIR}/man/catimg.1
   DESTINATION ${MAN_OUTPUT_PATH})
 
 # libs
-target_link_libraries(catimg m)
+target_link_libraries(catimg-bin m)
 
 # tests
 #enable_testing()
